@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Profile } from '../types';
-import { Save, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save } from 'lucide-react';
 
 interface BubbleInterfaceProps {
   profile: Omit<Profile, 'id' | 'createdAt' | 'updatedAt'>;
   setProfile: React.Dispatch<React.SetStateAction<Omit<Profile, 'id' | 'createdAt' | 'updatedAt'>>>;
-  onSave: (e: React.FormEvent) => void;
+  onSave: (e?: React.FormEvent) => void;
   onCancel: () => void;
   editingProfile?: Profile | null;
 }
@@ -55,64 +55,61 @@ function Bubble({ children, selected, onClick, color, disabled }: BubbleProps) {
 
 export default function BubbleInterface({ profile, setProfile, onSave, onCancel, editingProfile }: BubbleInterfaceProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [subStep, setSubStep] = useState<string | null>(null);
 
   const steps = [
     {
       id: 'basic',
       title: '👤 Informations de Base',
-      color: 'blue'
+      color: 'blue',
+      required: true
     },
     {
       id: 'religion',
       title: '🕯️ Courant Religieux',
-      color: 'purple'
+      color: 'purple',
+      required: true
     },
     {
       id: 'physical',
       title: '👁️ Apparence Physique',
-      color: 'green'
+      color: 'green',
+      required: true
     },
     {
       id: 'family',
       title: '👨‍👩‍👧‍👦 Famille',
-      color: 'pink'
+      color: 'pink',
+      required: true
     },
     {
       id: 'lifestyle',
       title: '📱 Mode de Vie',
-      color: 'yellow'
+      color: 'yellow',
+      required: true
     },
     {
       id: 'health',
       title: '🏥 Santé',
-      color: 'red'
+      color: 'red',
+      required: true
     }
   ];
 
-  const canProceed = () => {
-    switch (currentStep) {
-      case 0: // Basic info
-        return profile.prenom && profile.nom && profile.dateNaissance && profile.genre;
-      case 1: // Religion
-        return profile.courantReligieux;
-      default:
-        return true;
-    }
-  };
-
   const nextStep = () => {
-    if (currentStep < steps.length - 1 && canProceed()) {
+    if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
-      setSubStep(null);
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      setSubStep(null);
     }
+  };
+
+  const canProceed = () => {
+    // Add validation logic here
+    return true;
   };
 
   const renderBasicInfo = () => (
@@ -219,151 +216,164 @@ export default function BubbleInterface({ profile, setProfile, onSave, onCancel,
     </div>
   );
 
-  const renderReligion = () => (
-    <div className="space-y-8">
-      {!subStep && (
-        <>
-          <h3 className="text-lg font-semibold mb-4">Quel est votre courant religieux ?</h3>
+  const renderReligion = () => {
+    if (!profile.genre) return null;
+
+    return (
+      <div className="space-y-8">
+        {/* Common religious questions */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Courant Religieux :</h3>
           <div className="flex gap-4 justify-center flex-wrap">
             <Bubble
               selected={profile.courantReligieux === 'dati'}
-              onClick={() => {
-                setProfile(prev => ({ ...prev, courantReligieux: 'dati' }));
-                setSubStep('dati');
-              }}
+              onClick={() => setProfile(prev => ({ ...prev, courantReligieux: 'dati' }))}
               color="purple"
             >
-              📚 Dati
+              🕊️ Dati
             </Bubble>
             <Bubble
               selected={profile.courantReligieux === 'haredi'}
-              onClick={() => {
-                setProfile(prev => ({ ...prev, courantReligieux: 'haredi' }));
-                setSubStep('haredi');
-              }}
+              onClick={() => setProfile(prev => ({ ...prev, courantReligieux: 'haredi' }))}
               color="purple"
             >
-              🎩 Haredi
+              📚 Haredi
             </Bubble>
             <Bubble
               selected={profile.courantReligieux === 'habad'}
-              onClick={() => {
-                setProfile(prev => ({ ...prev, courantReligieux: 'habad' }));
-                setSubStep('habad');
-              }}
+              onClick={() => setProfile(prev => ({ ...prev, courantReligieux: 'habad' }))}
               color="purple"
             >
-              👑 Habad
+              🕎 Habad
             </Bubble>
           </div>
-        </>
-      )}
+        </div>
 
-      {subStep === 'dati' && (
-        <div className="space-y-6">
-          <button
-            onClick={() => setSubStep(null)}
-            className="flex items-center text-purple-600 hover:text-purple-700 mb-4"
-          >
-            <ArrowLeft size={20} className="mr-2" />
-            Retour
-          </button>
-          
+        {/* Gender-specific questions */}
+        {profile.genre === 'homme' ? (
           <div>
-            <h3 className="text-lg font-semibold mb-4">Armée :</h3>
-            <div className="flex gap-4 justify-center">
+            <h3 className="text-lg font-semibold mb-4">Niveau d'Étude de la Torah :</h3>
+            <div className="flex gap-4 justify-center flex-wrap">
               <Bubble
-                selected={profile.armee === true}
-                onClick={() => setProfile(prev => ({ ...prev, armee: true }))}
-                color="green"
-              >
-                🪖 Oui
-              </Bubble>
-              <Bubble
-                selected={profile.armee === false}
-                onClick={() => setProfile(prev => ({ ...prev, armee: false }))}
-                color="red"
-              >
-                🚫 Non
-              </Bubble>
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Sort d'Israël :</h3>
-            <div className="flex gap-4 justify-center">
-              <Bubble
-                selected={profile.sortIsrael === true}
-                onClick={() => setProfile(prev => ({ ...prev, sortIsrael: true }))}
+                selected={profile.etudeTorahNiveau === 1}
+                onClick={() => setProfile(prev => ({ ...prev, etudeTorahNiveau: 1 }))}
                 color="blue"
               >
-                ✈️ Oui
+                📖 Cours le shabbat
               </Bubble>
               <Bubble
-                selected={profile.sortIsrael === false}
-                onClick={() => setProfile(prev => ({ ...prev, sortIsrael: false }))}
+                selected={profile.etudeTorahNiveau === 2}
+                onClick={() => setProfile(prev => ({ ...prev, etudeTorahNiveau: 2 }))}
                 color="blue"
               >
-                🏠 Non
+                📚 Cours dans la semaine
+              </Bubble>
+              <Bubble
+                selected={profile.etudeTorahNiveau === 3}
+                onClick={() => setProfile(prev => ({ ...prev, etudeTorahNiveau: 3 }))}
+                color="blue"
+              >
+                ⏰ Moments d'études fixes
+              </Bubble>
+              <Bubble
+                selected={profile.etudeTorahNiveau === 4}
+                onClick={() => setProfile(prev => ({ ...prev, etudeTorahNiveau: 4 }))}
+                color="blue"
+              >
+                ⌛ Mi-temps
+              </Bubble>
+              <Bubble
+                selected={profile.etudeTorahNiveau === 5}
+                onClick={() => setProfile(prev => ({ ...prev, etudeTorahNiveau: 5 }))}
+                color="blue"
+              >
+                📖 Plein temps
               </Bubble>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Pratiques Religieuses :</h3>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-md font-medium mb-3">Couverture des cheveux :</h4>
+                <div className="flex gap-4 justify-center flex-wrap">
+                  <Bubble
+                    selected={profile.couvreCheveux?.oui === true}
+                    onClick={() => setProfile(prev => ({
+                      ...prev,
+                      couvreCheveux: { oui: true, type: prev.couvreCheveux?.type || 'foulard' }
+                    }))}
+                    color="pink"
+                  >
+                    👒 Oui
+                  </Bubble>
+                  <Bubble
+                    selected={profile.couvreCheveux?.oui === false}
+                    onClick={() => setProfile(prev => ({
+                      ...prev,
+                      couvreCheveux: { oui: false }
+                    }))}
+                    color="pink"
+                  >
+                    🎀 Non
+                  </Bubble>
+                </div>
+                
+                {profile.couvreCheveux?.oui && (
+                  <div className="mt-4">
+                    <h4 className="text-md font-medium mb-3">Type de couverture :</h4>
+                    <div className="flex gap-4 justify-center">
+                      <Bubble
+                        selected={profile.couvreCheveux?.type === 'foulard'}
+                        onClick={() => setProfile(prev => ({
+                          ...prev,
+                          couvreCheveux: { ...prev.couvreCheveux, type: 'foulard' }
+                        }))}
+                        color="pink"
+                      >
+                        🧣 Foulard
+                      </Bubble>
+                      <Bubble
+                        selected={profile.couvreCheveux?.type === 'perruque'}
+                        onClick={() => setProfile(prev => ({
+                          ...prev,
+                          couvreCheveux: { ...prev.couvreCheveux, type: 'perruque' }
+                        }))}
+                        color="pink"
+                      >
+                        👱‍♀️ Perruque
+                      </Bubble>
+                    </div>
+                  </div>
+                )}
+              </div>
 
-      {subStep === 'haredi' && (
-        <div className="space-y-6">
-          <button
-            onClick={() => setSubStep(null)}
-            className="flex items-center text-purple-600 hover:text-purple-700 mb-4"
-          >
-            <ArrowLeft size={20} className="mr-2" />
-            Retour
-          </button>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Position sur l'armée :</h3>
-            <div className="flex gap-4 justify-center">
-              <Bubble
-                selected={profile.pourArmee === true}
-                onClick={() => setProfile(prev => ({ ...prev, pourArmee: true }))}
-                color="green"
-              >
-                ✅ Pour
-              </Bubble>
-              <Bubble
-                selected={profile.pourArmee === false}
-                onClick={() => setProfile(prev => ({ ...prev, pourArmee: false }))}
-                color="red"
-              >
-                ❌ Contre
-              </Bubble>
+              <div>
+                <h4 className="text-md font-medium mb-3">Autres pratiques :</h4>
+                <div className="flex gap-4 justify-center flex-wrap">
+                  <Bubble
+                    selected={profile.collants === true}
+                    onClick={() => setProfile(prev => ({ ...prev, collants: !prev.collants }))}
+                    color="pink"
+                  >
+                    👖 Collants
+                  </Bubble>
+                  <Bubble
+                    selected={profile.manchesCourtes === true}
+                    onClick={() => setProfile(prev => ({ ...prev, manchesCourtes: !prev.manchesCourtes }))}
+                    color="pink"
+                  >
+                    👕 Manches courtes
+                  </Bubble>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Style vestimentaire :</h3>
-            <div className="flex gap-4 justify-center">
-              <Bubble
-                selected={profile.noirBlanc === true}
-                onClick={() => setProfile(prev => ({ ...prev, noirBlanc: true }))}
-                color="purple"
-              >
-                ⚫⚪ Noir et Blanc
-              </Bubble>
-              <Bubble
-                selected={profile.noirBlanc === false}
-                onClick={() => setProfile(prev => ({ ...prev, noirBlanc: false }))}
-                color="purple"
-              >
-                🌈 Autre
-              </Bubble>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   const renderPhysical = () => (
     <div className="space-y-8">
@@ -717,93 +727,96 @@ export default function BubbleInterface({ profile, setProfile, onSave, onCancel,
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
-              {editingProfile ? '✏️ Modifier le Profil' : '➕ Nouveau Profil'}
-            </h1>
-            
-            {/* Progress bar */}
-            <div className="flex justify-center mb-6">
-              <div className="flex space-x-2">
-                {steps.map((step, index) => (
-                  <div
-                    key={step.id}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentStep
-                        ? `bg-${step.color}-500 scale-125`
-                        : index < currentStep
-                        ? `bg-${step.color}-300`
-                        : 'bg-gray-200'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            
-            <h2 className="text-xl font-semibold text-gray-700">
-              {steps[currentStep].title}
-            </h2>
+    <div className="space-y-8">
+      {/* Progress bar */}
+      <div className="relative pt-1">
+        <div className="flex mb-2 items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+              Étape {currentStep + 1} sur {steps.length}
+            </span>
           </div>
-
-          {/* Content */}
-          <div className="mb-8">
-            {renderCurrentStep()}
+          <div className="text-right">
+            <span className="text-xs font-semibold inline-block text-blue-600">
+              {Math.round(((currentStep + 1) / steps.length) * 100)}%
+            </span>
           </div>
+        </div>
+        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+          <div
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 transition-all duration-500"
+          ></div>
+        </div>
+      </div>
 
-          {/* Navigation */}
-          <div className="flex justify-between items-center pt-6 border-t">
-            <div className="flex space-x-4">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Annuler
-              </button>
-              
-              {currentStep > 0 && (
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  <ArrowLeft size={16} className="mr-2" />
-                  Précédent
-                </button>
-              )}
-            </div>
+      {/* Step title */}
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-800">{steps[currentStep].title}</h2>
+        <p className="text-gray-600 mt-2">
+          Remplissez les informations pour cette étape
+        </p>
+      </div>
 
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">
-                Étape {currentStep + 1} sur {steps.length}
-              </span>
-              
-              {currentStep < steps.length - 1 ? (
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  disabled={!canProceed()}
-                  className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Suivant
-                  <ArrowRight size={16} className="ml-2" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onSave}
-                  className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                >
-                  <Save size={16} className="mr-2" />
-                  {editingProfile ? 'Mettre à jour' : 'Créer le profil'}
-                </button>
-              )}
-            </div>
-          </div>
+      {/* Step content */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        {renderCurrentStep()}
+      </div>
+
+      {/* Navigation buttons */}
+      <div className="flex justify-between mt-8">
+        <button
+          type="button"
+          onClick={prevStep}
+          disabled={currentStep === 0}
+          className={`flex items-center px-6 py-2 rounded-lg transition-colors font-medium ${
+            currentStep === 0
+              ? 'text-gray-400 cursor-not-allowed'
+              : 'text-blue-600 hover:text-blue-700'
+          }`}
+        >
+          <ArrowLeft size={20} className="mr-2" />
+          Précédent
+        </button>
+
+        <div className="flex space-x-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          >
+            Annuler
+          </button>
+          
+          {currentStep === steps.length - 1 ? (
+            <button
+              type="button"
+              onClick={() => onSave()}
+              disabled={!canProceed()}
+              className={`flex items-center px-6 py-2 rounded-lg font-medium ${
+                canProceed()
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              <Save size={20} className="mr-2" />
+              Enregistrer
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={nextStep}
+              disabled={!canProceed()}
+              className={`flex items-center px-6 py-2 rounded-lg font-medium ${
+                canProceed()
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Suivant
+              <ArrowRight size={20} className="ml-2" />
+            </button>
+          )}
         </div>
       </div>
     </div>

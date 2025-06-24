@@ -71,7 +71,7 @@ export interface Profile {
   etudeTorahNiveau?: 1 | 2 | 3 | 4 | 5;
   
   // Religion - Femme
-  couvreCheveux?: {
+  couvreCheveux: {
     oui: boolean;
     type?: 'foulard' | 'perruque';
   };
@@ -97,7 +97,7 @@ export interface Profile {
   pourArmee?: boolean;
   noirBlanc?: boolean;
   
-  // Critères recherchés
+  // Critères
   criteres: {
     ageMin: number;
     ageMax: number;
@@ -141,12 +141,25 @@ export interface RendezVous {
   heure: string;
   lieu: string;
   type: 'premier-rdv' | 'rencontre';
+  
+  // Pour un premier RDV
+  nouveauCandidat?: {
+    prenom: string;
+    nom: string;
+    telephone?: string;
+    email?: string;
+    notes?: string;
+  };
+  
+  // Pour une rencontre entre candidats
   personne1Id: string;
   personne2Id: string;
   numeroRencontre: number;
+  
   commentaire?: string;
   statut: 'prevu' | 'realise' | 'annule';
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Notification {

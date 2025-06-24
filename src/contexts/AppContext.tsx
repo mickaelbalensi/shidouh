@@ -8,6 +8,8 @@ interface AppState {
   designMode: 'form' | 'bubbles';
   selectedDate: string | null;
   searchCriteria: SearchCriteria;
+  showAppointmentForm: boolean;
+  editMode: boolean;
 }
 
 type AppAction =
@@ -22,7 +24,9 @@ type AppAction =
   | { type: 'DELETE_RENDEZ_VOUS'; payload: string }
   | { type: 'SET_RENDEZ_VOUS'; payload: RendezVous[] }
   | { type: 'SET_SELECTED_DATE'; payload: string | null }
-  | { type: 'SET_SEARCH_CRITERIA'; payload: SearchCriteria };
+  | { type: 'SET_SEARCH_CRITERIA'; payload: SearchCriteria }
+  | { type: 'SET_SHOW_APPOINTMENT_FORM'; payload: boolean }
+  | { type: 'SET_EDIT_MODE'; payload: boolean };
 
 const initialState: AppState = {
   profiles: [],
@@ -30,7 +34,9 @@ const initialState: AppState = {
   selectedProfile: null,
   designMode: 'form',
   selectedDate: null,
-  searchCriteria: {}
+  searchCriteria: {},
+  showAppointmentForm: false,
+  editMode: false
 };
 
 function appReducer(state: AppState, action: AppAction): AppState {
@@ -71,6 +77,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, selectedDate: action.payload };
     case 'SET_SEARCH_CRITERIA':
       return { ...state, searchCriteria: action.payload };
+    case 'SET_SHOW_APPOINTMENT_FORM':
+      return { ...state, showAppointmentForm: action.payload };
+    case 'SET_EDIT_MODE':
+      return { ...state, editMode: action.payload };
     default:
       return state;
   }

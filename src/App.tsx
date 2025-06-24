@@ -6,6 +6,7 @@ import ProfileList from './components/ProfileList';
 import ProfileForm from './components/ProfileForm';
 import Calendar from './components/Calendar';
 import SearchProfiles from './components/SearchProfiles';
+import RendezVousForm from './components/RendezVousForm';
 import { Profile } from './types';
 
 function AppContent() {
@@ -45,13 +46,25 @@ function AppContent() {
 
   // Gestion des profils sélectionnés pour édition
   React.useEffect(() => {
-    if (state.selectedProfile && currentPage === 'profiles') {
+    if (state.selectedProfile && currentPage === 'profiles' && !state.showAppointmentForm) {
       handleEditProfile(state.selectedProfile);
       dispatch({ type: 'SET_SELECTED_PROFILE', payload: null });
     }
-  }, [state.selectedProfile, currentPage]);
+  }, [state.selectedProfile, currentPage, state.showAppointmentForm]);
 
   const renderPage = () => {
+    // Show RendezVousForm if showAppointmentForm is true
+    if (state.showAppointmentForm) {
+      return (
+        <RendezVousForm
+          onClose={() => {
+            dispatch({ type: 'SET_SHOW_APPOINTMENT_FORM', payload: false });
+            dispatch({ type: 'SET_SELECTED_PROFILE', payload: null });
+          }}
+        />
+      );
+    }
+
     switch (currentPage) {
       case 'dashboard':
         return <Dashboard />;

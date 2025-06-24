@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+  <profiles>
+    <profile>
+      <id>string</id>
+      <createdAt>datetime</createdAt>
+      <updatedAt>datetime</updatedAt>
+      
+      <!-- Informations de base -->
+      <prenom>string</prenom>
+      <nom>string</nom>
+      <dateNaissance>date</dateNaissance>
+      <villeNaissance>string</villeNaissance>
+      <alya>boolean</alya>
+      <dateAlya>date</dateAlya>
+      <genre>homme|femme</genre>
+      
+      <!-- Formation et travail -->
+      <formationProfessionnelle>string</formationProfessionnelle>
+      <etudes>string</etudes>
+      <travailActuel>string</travailActuel>
+      
+      <!-- Famille -->
+      <famille>
+        <statutParents>vivent|decedes|divorce</statutParents>
+        <parentsConverti>boolean</parentsConverti>
+        <parentsdivorce>boolean</parentsdivorce>
+        <nombreEnfantsParents>integer</nombreEnfantsParents>
+        <prenomPerefrancais>string</prenomPerefrancais>
+        <prenomPerehebreu>string</prenomPerehebreu>
+        <prenomMerefrancais>string</prenomMerefrancais>
+        <prenomMerehebreu>string</prenomMerehebreu>
+        <nomJeuneFillleMere>string</nomJeuneFillleMere>
+        <nombreFreresSoeurs>integer</nombreFreresSoeurs>
+      </famille>
+      
+      <!-- Origine -->
+      <origine>sefarade|ashkenaze</origine>
+      <paysOrigine>
+        <pays>tunisie|algerie|maroc</pays>
+      </paysOrigine>
+      
+      <!-- Physique -->
+      <physique>
+        <taille>integer</taille>
+        <barbe>boolean</barbe>
+        <couleurPeau>string</couleurPeau>
+        <gros>boolean</gros>
+      </physique>
+      
+      <!-- Photo -->
+      <photo>
+        <photoProfile>string</photoProfile>
+        <partagePhoto>unique|multiple|non</partagePhoto>
+        <partageProfil>boolean</partageProfil>
+      </photo>
+      
+      <!-- Hobbies -->
+      <hobbies>
+        <hobby>string</hobby>
+      </hobbies>
+      
+      <!-- Parcours -->
+      <parcours>
+        <ecole>string</ecole>
+        <yeshivaKetana>string</yeshivaKetana>
+        <etudesUniversitaires>string</etudesUniversitaires>
+        <yeshivaGuedola>string</yeshivaGuedola>
+        <seminaire>string</seminaire>
+        <formations>
+          <formation>string</formation>
+        </formations>
+      </parcours>
+      
+      <!-- Midot -->
+      <midot>
+        <midah>string</midah>
+      </midot>
+      
+      <!-- Religion -->
+      <religion>
+        <telephone>
+          <possede>boolean</possede>
+          <type>casher-avec-internet|casher-sans-internet|sans-message|normal</type>
+        </telephone>
+        <films>boolean</films>
+        <reseauxSociaux>
+          <utilise>boolean</utilise>
+          <lesquels>
+            <reseau>string</reseau>
+          </lesquels>
+        </reseauxSociaux>
+        <television>boolean</television>
+      </religion>
+      
+      <!-- Religion specifique -->
+      <religionSpecifique>
+        <!-- Pour Homme -->
+        <etudeTorahNiveau>1|2|3|4|5</etudeTorahNiveau>
+        
+        <!-- Pour Femme -->
+        <couvreCheveux>
+          <oui>boolean</oui>
+          <type>foulard|perruque</type>
+        </couvreCheveux>
+        <collants>boolean</collants>
+        <manchesCourtes>boolean</manchesCourtes>
+      </religionSpecifique>
+      
+      <!-- Santé -->
+      <sante>
+        <fume>boolean</fume>
+        <problemeSante>
+          <actuel>boolean</actuel>
+          <passe>boolean</passe>
+          <details>string</details>
+        </problemeSante>
+      </sante>
+      
+      <!-- Courant religieux -->
+      <courantReligieux>dati|haredi|habad</courantReligieux>
+      
+      <!-- Spécifique Dati -->
+      <dati>
+        <armee>boolean</armee>
+        <sortIsrael>boolean</sortIsrael>
+      </dati>
+      
+      <!-- Spécifique Haredi -->
+      <haredi>
+        <pourArmee>boolean</pourArmee>
+        <noirBlanc>boolean</noirBlanc>
+      </haredi>
+      
+      <!-- Critères -->
+      <criteres>
+        <ageMin>integer</ageMin>
+        <ageMax>integer</ageMax>
+        <origine>sefarade|ashkenaze|indifferent</origine>
+        <courantReligieux>
+          <courant>string</courant>
+        </courantReligieux>
+        <autresCriteres>
+          <critere>string</critere>
+        </autresCriteres>
+      </criteres>
+      
+      <!-- Historique -->
+      <historique>
+        <entry>
+          <id>string</id>
+          <type>trait-caractere|rencontre</type>
+          <date>datetime</date>
+          <contenu>string</contenu>
+          <personneRencontree>string</personneRencontree>
+          <nombreRencontre>integer</nombreRencontre>
+          <lieu>string</lieu>
+          <heure>string</heure>
+          <commentaire>string</commentaire>
+        </entry>
+      </historique>
+      
+      <!-- Notes -->
+      <notes>
+        <general>string</general>
+        <famille>string</famille>
+        <religion>string</religion>
+        <physique>string</physique>
+        <sante>string</sante>
+        <parcours>string</parcours>
+      </notes>
+    </profile>
+  </profiles>
+</database> 

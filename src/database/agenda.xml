@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+  <agenda>
+    <rendezVous>
+      <id>string</id>
+      <date>datetime</date>
+      <heure>string</heure>
+      <lieu>string</lieu>
+      <type>premier-rdv|rencontre</type>
+      
+      <!-- Pour un premier RDV -->
+      <premierRdv>
+        <nouveauCandidat>
+          <prenom>string</prenom>
+          <nom>string</nom>
+          <telephone>string</telephone>
+          <email>string</email>
+          <notes>string</notes>
+        </nouveauCandidat>
+      </premierRdv>
+      
+      <!-- Pour une rencontre entre candidats -->
+      <rencontre>
+        <personne1Id>string</personne1Id>
+        <personne2Id>string</personne2Id>
+        <numeroRencontre>integer</numeroRencontre>
+      </rencontre>
+      
+      <commentaire>string</commentaire>
+      <statut>prevu|realise|annule</statut>
+      <createdAt>datetime</createdAt>
+      <updatedAt>datetime</updatedAt>
+    </rendezVous>
+  </agenda>
+</database> 
