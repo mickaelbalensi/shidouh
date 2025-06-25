@@ -1,61 +1,62 @@
 export interface Profile {
   id: string;
+  createdAt?: string;
+  updatedAt?: string;
+  
   // Informations de base
   prenom: string;
   nom: string;
   dateNaissance: string;
+  paysNaissance?: string;
   villeNaissance: string;
+  paysResidence?: string;
   alya: boolean;
   dateAlya?: string;
   genre: 'homme' | 'femme';
-  
-  // Formation et travail
-  formationProfessionnelle: string;
-  etudes: string;
-  travailActuel: string;
-  
-  // Famille
-  statutParents: 'vivent' | 'decedes' | 'divorce';
-  parentsConverti: boolean;
-  parentsdivorce: boolean;
-  nombreEnfantsParents: number;
-  prenomPerefrancais: string;
-  prenomPerehebreu: string;
-  prenomMerefrancais: string;
-  prenomMerehebreu: string;
-  nomJeuneFillleMere: string;
-  nombreFreresSoeurs: number;
-  origine: 'sefarade' | 'ashkenaze';
-  paysOrigine?: ('tunisie' | 'algerie' | 'maroc')[];
-  
-  // Physique
-  taille: number;
-  barbe?: boolean;
-  couleurPeau: string;
-  gros: boolean;
-  
-  // Photo
   photoProfile?: string;
   partagePhoto: 'unique' | 'multiple' | 'non';
   partageProfil: boolean;
   
-  // Nouveaux champs
+  // Origine
+  origine: 'sefarade' | 'ashkenaze';
+  paysOrigine?: ('tunisie' | 'algerie' | 'maroc')[];
+  
+  // Parcours et formation
+  aBac: boolean;
+  ecoles?: string[];
+  yeshivaKetana?: string[];
+  yeshivaGuedola?: string[];
+  seminaire?: string[];
+  formationProfessionnelle: string;
+  domaineEtudes?: string;
+  universite?: string[];
+  
+  // Travail
+  travailActuel: string;
+  lieuTravail?: string;
+  
+  // Hobbies et passions
   hobbies: string[];
   
-  // About yourself
-  parcours: {
-    ecole?: string;
-    yeshivaKetana?: string;
-    etudesUniversitaires?: string;
-    yeshivaGuedola?: string;
-    seminaire?: string;
-    formations: string[];
-  };
+  // Apparence physique
+  taille: number;
+  couleurYeux?: string;
+  couleurPeau: string;
+  couleurCheveux?: string;
+  cheveuxLongs?: boolean;
+  gros: boolean;
+  
+  // Spécifique homme
+  barbe?: boolean;
+  typeBarbier?: 'rase' | 'taille' | 'barbu';
   
   // Midot
   midot: string[];
   
   // Religion
+  courantReligieux: 'dati' | 'haredi' | 'habad';
+  
+  // Religion - Commun
   telephone: {
     possede: boolean;
     type?: 'casher-avec-internet' | 'casher-sans-internet' | 'sans-message' | 'normal';
@@ -73,10 +74,23 @@ export interface Profile {
   // Religion - Femme
   couvreCheveux: {
     oui: boolean;
-    type?: 'foulard' | 'perruque';
+    type?: 'foulard' | 'perruque' | string[];
   };
   collants?: boolean;
+  jupeOuPantalon?: 'jupe' | 'pantalon';
   manchesCourtes?: boolean;
+  
+  // Famille
+  statutParents: 'vivent' | 'decedes' | 'divorce';
+  parentsConverti: boolean;
+  parentsdivorce: boolean;
+  nombreEnfantsParents: number;
+  prenomPerefrancais: string;
+  prenomPerehebreu: string;
+  prenomMerefrancais: string;
+  prenomMerehebreu: string;
+  nomJeuneFillleMere: string;
+  nombreFreresSoeurs: number;
   
   // Santé
   fume: boolean;
@@ -86,8 +100,15 @@ export interface Profile {
     details?: string;
   };
   
-  // Courant religieux
-  courantReligieux: 'dati' | 'haredi' | 'habad';
+  // Parcours (ancien format - à migrer)
+  parcours: {
+    ecole?: string;
+    yeshivaKetana?: string;
+    etudesUniversitaires?: string;
+    yeshivaGuedola?: string;
+    seminaire?: string;
+    formations: string[];
+  };
   
   // Si Dati
   armee?: boolean;
@@ -106,21 +127,9 @@ export interface Profile {
     autresCriteres: string[];
   };
   
-  // Historique et rencontres
-  historique: HistoriqueEntry[];
-  
-  // Notes par catégorie
-  notes: {
-    general?: string;
-    famille?: string;
-    religion?: string;
-    physique?: string;
-    sante?: string;
-    parcours?: string;
-  };
-  
-  createdAt: string;
-  updatedAt: string;
+  // Historique et notes
+  historique: any[];
+  notes: Record<string, string>;
 }
 
 export interface HistoriqueEntry {

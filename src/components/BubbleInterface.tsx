@@ -57,42 +57,15 @@ export default function BubbleInterface({ profile, setProfile, onSave, onCancel,
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [
-    {
-      id: 'basic',
-      title: '👤 Informations de Base',
-      color: 'blue',
-      required: true
-    },
-    {
-      id: 'religion',
-      title: '🕯️ Courant Religieux',
-      color: 'purple',
-      required: true
-    },
-    {
-      id: 'physical',
-      title: '👁️ Apparence Physique',
-      color: 'green',
-      required: true
-    },
-    {
-      id: 'family',
-      title: '👨‍👩‍👧‍👦 Famille',
-      color: 'pink',
-      required: true
-    },
-    {
-      id: 'lifestyle',
-      title: '📱 Mode de Vie',
-      color: 'yellow',
-      required: true
-    },
-    {
-      id: 'health',
-      title: '🏥 Santé',
-      color: 'red',
-      required: true
-    }
+    { title: "Genre", fields: ["genre"] },
+    { title: "Informations de Base", fields: ["prenom", "nom", "dateNaissance", "paysNaissance", "villeNaissance", "paysResidence", "alya", "dateAlya", "origine", "paysOrigine"] },
+    { title: "Religion", fields: ["courantReligieux", "etudeTorahNiveau", "couvreCheveux", "collants", "jupeOuPantalon", "manchesCourtes", "telephone", "films", "reseauxSociaux"] },
+    { title: "Physique", fields: ["taille", "couleurYeux", "couleurPeau", "couleurCheveux", "cheveuxLongs", "gros", "barbe", "typeBarbier"] },
+    { title: "Famille", fields: ["statutParents", "parentsConverti", "parentsdivorce", "nombreEnfantsParents", "prenomPerefrancais", "prenomPerehebreu", "prenomMerefrancais", "prenomMerehebreu", "nomJeuneFillleMere", "nombreFreresSoeurs"] },
+    { title: "Parcours", fields: ["aBac", "ecoles", "yeshivaKetana", "yeshivaGuedola", "seminaire", "domaineEtudes", "universite", "formationProfessionnelle", "travailActuel", "lieuTravail"] },
+    { title: "Midot et Hobbies", fields: ["midot", "hobbies"] },
+    { title: "Santé", fields: ["fume", "problemeSante"] },
+    { title: "Partage", fields: ["photoProfile", "partagePhoto", "partageProfil"] }
   ];
 
   const nextStep = () => {
